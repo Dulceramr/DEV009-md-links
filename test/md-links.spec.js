@@ -16,5 +16,22 @@ describe('mdLinks', () => {
     const fileFormatNotValid = './test/example.txt';
     return expect(mdLinks(fileFormatNotValid)).rejects.toThrow("Invalid file extension");
   });
+  it('should resolve with an empty array for an empty example', () => {
+    const emptyFile = './test/emptyExample.md';
+    return expect(mdLinks(emptyFile)).resolves.toEqual([]);
+  });
+  it('should resolve with an empty array for an example with text and no links', () => {
+    const noLinksFile = './test/noLinksExample.mkd';
+    return expect(mdLinks(noLinksFile)).resolves.toEqual([]);
+  });
+  it('should resolve with an array with three links for a markdown file with links and text', () => {
+    const threeLinksFile = './test/threeLinksExample.mdown';
+    return mdLinks(threeLinksFile).then((result) => {
+      expect(result.length).toBeGreaterThan(0);
+      expect(result[0]).toHaveProperty('href');
+      expect(result[0]).toHaveProperty('text');
+      expect(result[0]).toHaveProperty('file');
+    })
+  });
 
 });

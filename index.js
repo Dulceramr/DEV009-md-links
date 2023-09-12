@@ -14,15 +14,15 @@ const mdLinks = (inputPath, options) => {
         const fileExtension = path.extname(resolvedPath); //get file extension 
         const markdownExtensions = ['.md', '.mkd', '.mdwn', '.mdown', '.mdtxt', '.mdtext', '.markdown', '.text'];
         if (markdownExtensions.includes(fileExtension)) {
-          console.log("se leyo el archivo");
+          //console.log("se leyo el archivo");
           return fs.readFile(resolvedPath, 'utf8');
         } else {
-          console.log("estamos en el else, no se leyo el arhcivo");
+          //console.log("estamos en el else, no se leyo el arhcivo");
           reject(new Error("Invalid file extension"));
         }
       })
       .then(content => {
-        console.log("se llego a la segunda promesa");
+       // console.log("se llego a la segunda promesa");
         const regex = /\[([^\]]+)\]\((http[s]?:\/\/[^\)]+)\)/g;
         let match;
         const links = [];
@@ -33,12 +33,12 @@ const mdLinks = (inputPath, options) => {
             file: resolvedPath
           });
         }
-        console.log("se extrajeron los links")
-        console.log(links);
+       // console.log("se extrajeron los links")
+       // console.log(links);
         resolve(links); //resolve the promise with the array of links  
       })
       .catch(err => {
-        console.log("entramos en el catch");
+       // console.log("entramos en el catch");
         reject(new Error("Path not found"));
       });
   });
