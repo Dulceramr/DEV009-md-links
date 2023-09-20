@@ -1,0 +1,9 @@
+# Example with three links 
+*this is an example*
+**with links and text**
+**this is link 1**
+[JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript) 
+**this is link 2**
+[Python](https://www.python.org)
+**this is link 3**
+[PHP](https://www.php.net/manual/es/intro-whatis.php)
