@@ -3,7 +3,21 @@ const fs = require('fs').promises;
 const axios = require('axios');
 
 const getFilesInDirectory = (directoryPath) => {
-    return fs.readdir(directoryPath);
+    return fs.readdir(directoryPath, { withFileTypes: true }).then(entries => {
+      const promises = entries.map(entry => {
+        const entryPath = path.join(directoryPath, entry.name);
+        if(entry.isDirectory()){
+          return getFilesInDirectory(entryPath);
+        } else if(path.extname(entry.name).toLowerCase() === ".md"){
+          return Promise.resolve([entryPath]);
+        } else {
+          return Promise.resolve([]);
+        }
+      });
+      return Promise.all(promises).then(results => {
+        return [].concat(...results);
+      });
+    });
   };
 
   const getMarkdownFiles = (files) => {

@@ -5,7 +5,7 @@ jest.mock('axios')
 
 describe('validateLink', () => {
     it('deberia resolver si el link es valido', () => {
-        axios.get.mockResolvedValue({status: 200});
+        jest.spyOn(axios, "get").mockResolvedValue({status: 200});
         return expect(validateLink({ href: 'https://www.google.com.mx/' })).resolves.toHaveProperty('status', 200); 
     });
 

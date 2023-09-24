@@ -8,17 +8,16 @@
       resolvedPath = path.resolve(inputPath); //takes inputPath and makes it absolute
     }
     return new Promise((resolve, reject) => {
-      fs.stat(resolvedPath) 
+      fs.stat(resolvedPath) // get information about the file
         .then(stats => {
-          if(stats.isDirectory()){
-            return getFilesInDirectory(resolvedPath)
+          if(stats.isDirectory()){ //verify is resolvedPath is a folder
+            return getFilesInDirectory(resolvedPath) //get the list of all the files in the folder
                .then(files => {
-                const markdownFiles = getMarkdownFiles(files);
+                const markdownFiles = getMarkdownFiles(files); //filter markdown files
                 const promises = markdownFiles.map(file => {
-                  const filePath = path.join(resolvedPath, file);
-                  return processFile(filePath, validate)
+                  return processFile(file, validate)
                 });
-                return Promise.all(promises)
+                return Promise.all(promises) //wait for all the promises to complete  
                   .then(results => {
                     return results.flat();
                   });
@@ -28,7 +27,6 @@
           }
         })
         .then(links => {
-          console.log(links);
           resolve(links);
         })
         .catch(err => {
