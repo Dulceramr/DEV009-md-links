@@ -6,9 +6,10 @@ const getFilesInDirectory = (directoryPath) => {
     return fs.readdir(directoryPath, { withFileTypes: true }).then(entries => {
       const promises = entries.map(entry => {
         const entryPath = path.join(directoryPath, entry.name);
+        const validMarkdownExtensions = ['.md', '.mkd', '.mdwn', '.mdown', '.mdtxt', '.mdtext', '.markdown', '.text'];
         if(entry.isDirectory()){
           return getFilesInDirectory(entryPath);
-        } else if(path.extname(entry.name).toLowerCase() === ".md"){
+        } else if(validMarkdownExtensions.includes(path.extname(entry.name).toLowerCase())){
           return Promise.resolve([entryPath]);
         } else {
           return Promise.resolve([]);
@@ -18,11 +19,6 @@ const getFilesInDirectory = (directoryPath) => {
         return [].concat(...results);
       });
     });
-  };
-
-  const getMarkdownFiles = (files) => {
-    const markdownExtensions = ['.md', '.mkd', '.mdwn', '.mdown', '.mdtxt', '.mdtext', '.markdown', '.text'];
-    return files.filter(file => markdownExtensions.includes(path.extname(file)));
   };
 
   const processFile = (filePath, validate) => {
@@ -63,6 +59,5 @@ const getFilesInDirectory = (directoryPath) => {
 
 module.exports = {
     getFilesInDirectory,
-    getMarkdownFiles,
     processFile
 };

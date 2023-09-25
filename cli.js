@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 const { mdLinks } = require('./index.js');
+const chalk = require('chalk');
 
 const path = process.argv[2];
 const options = {
-    validate: process.argv.includes('--validate'),
+    validate: process.argv.includes('--validate'), //check if this flags are present in the command line arguments
     stats: process.argv.includes('--stats')
 };
 
@@ -24,8 +25,13 @@ mdLinks(path, options.validate)
     } else if(options.validate){
         links.forEach(link => {
             const truncatedText = link.text.slice(0, 50);
-            console.log(`${link.file} ${link.href} ${link.ok} ${link.status} ${truncatedText}`)
-        });
+            console.log(
+                chalk.blue.bold(link.file),
+                chalk.cyan.bold(link.href),
+                chalk.green.bold(link.ok), 
+                chalk.white.bold(link.status),
+                chalk.magenta.bold(truncatedText)
+)});
     } else {
         links.forEach(link => {
             const truncatedText = link.text.slice(0, 50);

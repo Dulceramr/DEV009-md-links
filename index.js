@@ -1,6 +1,6 @@
   const path = require('path');
   const fs = require('fs').promises;
-  const { getFilesInDirectory, getMarkdownFiles, processFile } = require('./data');
+  const { getFilesInDirectory, processFile } = require('./data');
 
   const mdLinks = (inputPath, validate = false) => {
     let resolvedPath = inputPath;
@@ -13,8 +13,7 @@
           if(stats.isDirectory()){ //verify is resolvedPath is a folder
             return getFilesInDirectory(resolvedPath) //get the list of all the files in the folder
                .then(files => {
-                const markdownFiles = getMarkdownFiles(files); //filter markdown files
-                const promises = markdownFiles.map(file => {
+                const promises = files.map(file => {
                   return processFile(file, validate)
                 });
                 return Promise.all(promises) //wait for all the promises to complete  
