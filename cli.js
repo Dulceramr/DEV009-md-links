@@ -15,12 +15,12 @@ mdLinks(path, options.validate)
         const totalLinks = links.length;
         const uniqueLinks = new Set(links.map(link => link.href)).size;
 
-        console.log(`Total: ${totalLinks}`);
-        console.log(`Unique: ${uniqueLinks}`);
+        console.log(chalk.magenta.bold("Total: " + totalLinks));
+        console.log(chalk.blue.bold("Unique: " + uniqueLinks));
 
         if(options.validate){
             const brokenLinks = links.filter(link => link.ok === "Fail").length;
-            console.log(`Broken: ${brokenLinks}`);
+            console.log(chalk.magenta.bold("Broken: " + brokenLinks));
         }
     } else if(options.validate){
         links.forEach(link => {

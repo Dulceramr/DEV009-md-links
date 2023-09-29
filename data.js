@@ -3,13 +3,12 @@ const fs = require('fs').promises;
 const axios = require('axios');
 
 const getFilesInDirectory = (directoryPath) => {
-    return fs.readdir(directoryPath, { withFileTypes: true }).then(entries => {
+    const entries = fs.readdir(directoryPath, { withFileTypes: true }).then(entries => {
       const promises = entries.map(entry => {
         const entryPath = path.join(directoryPath, entry.name);
-        const validMarkdownExtensions = ['.md', '.mkd', '.mdwn', '.mdown', '.mdtxt', '.mdtext', '.markdown', '.text'];
         if(entry.isDirectory()){
           return getFilesInDirectory(entryPath);
-        } else if(validMarkdownExtensions.includes(path.extname(entry.name).toLowerCase())){
+        } else if(isValidMarkdown(entry.name)){
           return Promise.resolve([entryPath]);
         } else {
           return Promise.resolve([]);
@@ -19,10 +18,16 @@ const getFilesInDirectory = (directoryPath) => {
         return [].concat(...results);
       });
     });
+    return entries;
   };
 
+  const isValidMarkdown = (file) => {
+    const validMarkdownExtensions = ['.md', '.mkd', '.mdwn', '.mdown', '.mdtxt', '.mdtext', '.markdown', '.text'];
+    return validMarkdownExtensions.includes(path.extname(file).toLowerCase());
+  }
+
   const processFile = (filePath, validate) => {
-    return fs.readFile(filePath, 'utf8')
+    const resultado = fs.readFile(filePath, 'utf8')
        .then(content => {
         const regex = /\[([^\]]+)\]\((http[s]?:\/\/[^\)]+)\)/g;
         let match;
@@ -41,6 +46,7 @@ const getFilesInDirectory = (directoryPath) => {
           return links; //return the links array (without attempting to validate each link)
         } 
        });
+       return(resultado);
   };
 
   const validateLink = (link) => {
@@ -59,5 +65,7 @@ const getFilesInDirectory = (directoryPath) => {
 
 module.exports = {
     getFilesInDirectory,
-    processFile
+    processFile, 
+    isValidMarkdown,
+    validateLink
 };
