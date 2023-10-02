@@ -52,7 +52,6 @@ describe('mdLinks', () => {
       }
     ]; 
     return mdLinks(folder).then((res) => {
-      console.log(res);
         expect(res).toEqual(result);
     })
   })

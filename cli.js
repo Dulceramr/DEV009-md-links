@@ -35,7 +35,11 @@ mdLinks(path, options.validate)
     } else {
         links.forEach(link => {
             const truncatedText = link.text.slice(0, 50);
-            console.log(`${link.file} ${link.href} ${truncatedText}`)
+            console.log(
+                chalk.blue.bold(link.file),
+                chalk.cyan.bold(link.href),
+                chalk.magenta.bold(truncatedText)
+                )
         }); 
     }
 })
