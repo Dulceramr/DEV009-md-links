@@ -1,63 +1,126 @@
-# Markdown Links
+# MD-Links: A Markdown Link Checker
 
-## Index
+## Introduction
 
-* [1. Introduction ](#1-Introduction)
-* [2. Characteristics ](#2-Characterictics)
-* [3. Installation](#3-Installation-and-using)
+**Markdown** is a versatile lightweight markup language that's gained immense popularity among developers and content creators. Its simplicity allows users to write content using plain text formatting, which then can be seamlessly converted into HTML for web display. Platforms that handle plain text—like GitHub, various forums, and numerous blogs—often employ Markdown, making `.md` files omnipresent. One of the hallmarks of these files is the inclusion of links, which serve as a bridge to other valuable resources. However, as time progresses, these links can become outdated or broken, potentially hindering the user experience and the value of the content.
 
-***
+Recognizing this challenge, we introduce **md-links**. It's not just another library; it's a robust solution created with Node.js and implemented in JavaScript. Our primary mission is to assist users in verifying and reporting the status of links embedded within their Markdown files. Whether you are a content creator, a developer, or simply someone who relies heavily on Markdown files, **md-links** ensures that the quality and reliability of your links remain intact.
 
-## 1. Introduction 
+To guide our development process, we relied on meticulous planning, prioritizing tasks, and continuously monitoring our progress. We harnessed the power of GitHub Projects by utilizing its features like issues and milestones. Furthermore, to visualize and streamline our development approach, we implemented a flow diagram. This visual aid decomposes the process, providing a clear roadmap of how our library functions.
 
-Markdown is a lightweight markup languaje that allows users to write using simple text formatting, which is then converted to HTML for display on the web, it is very popular and used on many platforms that handle plain text such as GitHub, forums, blogs. etc. And it´s very common to find several files in that format in any type of repository, one example would be the traditional README.md. 
+| ![Flow diagram](diagrama-mdlinks.png) |
+|:--:|
+|*Flow diagram illustrating the logic of the implemented library.*|
 
-This Markdown files usually contains links that sometimes are broken or are not valid, this problem make evident the need for a tool that can read the markdown files in order to identify the links and that allows an analysis of these data through certain statistics.
+## 2. Features
+* Supports various Markdown extensions: `.md`, `.mkd`, `.mdwn`, `.mdown`, `.mdtxt`, `.mdtext`, `.markdown`, and `.text`.
+* Validates the status of each link found.
+* Capable of scanning entire directories.
+* Comes with a built-in Command Line Interface (CLI).
 
-In this context, we have created this tool called "md-links", which is a library created with Node.js that allows the user to verify and report links found within Markdown format files. 
+## 3. Installation 
 
-## 2. Characteristics 
-* md-links has the ability to parse links in Markdown files (.md, .mkd, .mdwn, .mdown, .mdtxt, .mdtext, .markdown, .text).
-* It can validate the availability of each link. 
-* Supports scanning of entire directories.
-* CLI (Command Line Interface) included.
+To install **MD-Links**, simply run the following command:
 
-## 3. Installation and using 
+## Installation
 
+To install **MD-Links**, simply run the following command:
 
-To install md-links you just simply need to execute the next command line: 
-
+```bash
 npm install Dulceramr/DEV009-md-links
+```
 
-### Using md-links 
+
+## Using md-links 
+
+### As a Library
 
 To use md-links as a library: 
 
+
+```javascript
 const mdLinks = require('md-links');
 
 mdLinks('<path>', { validate: true })
-    .then(links => {
-        console.log(links);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    .then(links => console.log(links))
+    .catch(error => console.error(error));
+```
+
+### From the Command Line
 
 To use md-links in the command line: 
 Run the "mdlinks" command followed by the file or directory file.
 
-mdlinks <path>
+```bash
+mdlinks <path_to_file_or_directory>
+```
 
-### Options
+### Available Options
 
-* "--validate": Check if the link works or not.
-* "--stats": Shows basic statistics about the links 
+* `--validate`: Check if the link is active.
+* `--stats`: Displays statistics about the links.
 
 ### API
-mdlinks(path, validate)
-Analyzes links in a file or directory.
-* path: Path of the file or the directory.
-* validate: Boolean that determine whether you want to validate the links.
-* stats: Boolean that determine whether you want to obtains statistics about the links.
+```bash
+mdlinks(<path>, <--validate>, <--stats>)
+```
+Analyzes and fetches links from a given file or directory.
+* `path`: The file or directory's path.
+* `validate`: Boolean to decide link validation.
+* `stats`: Boolean to get statistics about the links.
 
+## 4. Examples of using
+
+### Installation
+In the console within the directory you are going to install the md-links tool, just need to run the next command line:
+
+```bash
+npm install Dulceramr/DEV009-md-links
+```
+
+| ![Installation example](Example-installation.png) |
+|:--:|
+|*Installation example. Example of the simple installation running the specified command .*|
+
+### Default use
+Once the md-links are installed you can use it with the command:
+
+```bash
+mdlinks <path>
+```
+
+Path: Absolute or relative path to the file, if the path entered is relative, it must be resolved as relative to the directory from where the md-links tool was installed. 
+
+| ![Use example](three-links-example.png) |
+|:--:|
+|*Example of use. Example of the use of the tool md-links running the specified command followed by the absolute or relative path.*|
+
+Running the command this way, the tool returns for each of the links the path of the file where the link was found (file), the path of the link found (href) and the text inside the link (text).
+
+### Options: validate
+Optionally you can add two parameters to the md-links function. The first option is --validate, when this option is passed an http request is made to find out if the link works, if so, "ok" is returned, otherwise it will be "fail", and the response of the status of the HTTP the request received is also obtained.
+
+| ![Validate example](example-validate-broken-links.png) |
+|:--:|
+|**Example of use with --validate.** *Example of the use of the tool md-links running the specified command followed by the path and the flag --validate.*|
+
+### Options: stats
+The other option is --stats, the output will be basic stats about the links (total and unique).
+
+| ![Stats example](example-stats.png) |
+|:--:|
+|**Example of use with --stats.** *Example of the use of the tool md-links running the specified command followed by the path and the flag --stats.*|
+
+We can also combine --validate and --stats to obtain stats that need the results of the validation.
+
+| ![Validate and stats example](example-validate-stats.png) |
+|:--:|
+|**Example of use with --validate and --stats.** *Example of the use of the tool md-links running the specified command followed by the path and the flag --validate and --stats.*|
+
+## Acknowledgments
+
+As the journey of creating **md-links** comes to its current stage, I'd like to take a moment to express my gratitude. First and foremost, I thank the open-source community for their continuous inspiration and the vast array of resources they offer. My peers and mentors in Laboratoria have been invaluable with their feedback and encouragement. Each query, bug report, and suggestion from my bootcamp peers and the users has been an opportunity for learning and improvement. Last but not least, my heartfelt thanks to anyone who chooses to use **md-links** and finds value in it. Your trust drives me to keep pushing the boundaries. Let's continue to build and innovate together. 
+
+With appreciation,  
+Dulce Ramirez
 
