@@ -7,14 +7,14 @@ jest.mock('fs').promises;
 
 describe('validateLink', () => {
     it('should resolve if the link is valid', () => {
-        jest.spyOn(axios, "get").mockResolvedValue({status: 200});
+        jest.spyOn(axios, "get").mockResolvedValue({status: 200}); //spy on calls to axios get method. mockResolvedValue: when axios.get is called it should inmmediately resolve the promise with an object that has a status property with the value 200 
         return expect(validateLink({ href: 'https://www.google.com.mx/' })).resolves.toHaveProperty('status', 200); 
     });
 
     it('should reject if the link is not valid', () => {
-        axios.get.mockRejectedValue({response:{status: 404}});
+        axios.get.mockRejectedValue({response:{status: 404}}); //using axios.get mock. mockRejectedValue: reject the promise
         return expect(validateLink({ href: 'https://www.google.com.mx/dev009' })).resolves.toHaveProperty('status', 404); 
-    });
+    }); //expect validateLink to handle this error and return an object with a status property with the value 404
 })
 
 describe('processFile', () => {
@@ -23,7 +23,6 @@ describe('processFile', () => {
         return processFile(threeLinksExample, true).then((res) => {
             expect(Array.isArray(res)).toBe(true);
         })
-       // expect(processFile(threeLinksExample)).resolves.toEqual(expectedResult);
     });
 });
 
@@ -33,13 +32,11 @@ describe('getFilesInDirectory', () => {
         return getFilesInDirectory(folder).then((res) => {
             expect(Array.isArray(res)).toBe(true);
         })
-       // return expect(getFilesInDirectory(folder)).resolves.toEqual("No valid Markdown files found in the directory");
       })
       it('should resolve with an empty array if the file isnt folder or markdown files', () => {
         const emptyFile = '/Users/dulceramirez/Documents/Laboratoria/DEV009-md-links/test/emptyDirectory';
         return getFilesInDirectory(emptyFile).then((res) => {
             expect(res).toEqual([]);
         })
-       // return expect(getFilesInDirectory(folder)).resolves.toEqual("No valid Markdown files found in the directory");
       })
 })

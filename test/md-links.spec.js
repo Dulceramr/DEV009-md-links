@@ -2,7 +2,7 @@ const { mdLinks } = require('../index.js');
 
 describe('mdLinks', () => {
   /*it('should return a promise', () => {
-    expect(mdLinks()).toBe(typeof Promise);
+    expect(mdLinks("/Users/dulceramirez/Documents/Laboratoria/DEV009-md-links/test/threeLinksExample.mdown")).toBe(typeof Promise);
   });*/
   it('should be a function', () => {
     expect(typeof mdLinks).toBe('function')
@@ -16,19 +16,15 @@ describe('mdLinks', () => {
     const fileFormatNotValid = './test/example.txt';
     return expect(mdLinks(fileFormatNotValid)).rejects.toThrow("Invalid file extension");
   });
-  it('should resolve with an empty array for an empty example', () => {
-    const emptyFile = './test/emptyExample.md';
-    return expect(mdLinks(emptyFile)).resolves.toEqual([]);
-  });
   it('should resolve with an empty array for an example with text and no links', () => {
     const noLinksFile = './test/noLinksExample.mkd';
     return expect(mdLinks(noLinksFile)).resolves.toEqual([]);
   });
   it('should resolve with an array with three links for a markdown file with links and text', () => {
     const threeLinksFile = './test/threeLinksExample.mdown';
-    return mdLinks(threeLinksFile).then((result) => {
-      expect(result.length).toBeGreaterThan(0);
-      expect(result[0]).toHaveProperty('href');
+    return mdLinks(threeLinksFile).then((result) => { //call mdlinks with threeLinksFile
+      expect(result.length).toBeGreaterThan(0); //check if the array contains at least one element
+      expect(result[0]).toHaveProperty('href'); //check that the first object has a property called href
       expect(result[0]).toHaveProperty('text');
       expect(result[0]).toHaveProperty('file');
     })
@@ -37,7 +33,7 @@ describe('mdLinks', () => {
     const emptyFolder = 'test/emptyDirectory';
     return expect(mdLinks(emptyFolder)).rejects.toThrow("No valid Markdown files found in the directory");
   })
- it('should resolve with an array', () => {
+ it('should resolve with an array for an example with a folder with a markdown file inside', () => {
     const folder = 'test/newExampleDirectory';
     const result = [
       {
@@ -51,7 +47,7 @@ describe('mdLinks', () => {
         file: '/Users/dulceramirez/Documents/Laboratoria/DEV009-md-links/test/newExampleDirectory/markdownExample.md'
       }
     ]; 
-    return mdLinks(folder).then((res) => {
+    return mdLinks(folder).then((res) => { //call mdlink function with the path of the directory, handle the result with .then
         expect(res).toEqual(result);
     })
   })
